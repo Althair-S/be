@@ -1,0 +1,46 @@
+import swaggerAutogen from "swagger-autogen";
+import { serve } from "swagger-ui-express";
+import { OutputFileType } from "typescript";
+
+
+
+const outputFile = "./swagger_output.json";
+const endpointsFiles = ["./src/routes/api.ts"];
+const doc = {
+  info: {
+    version: "0.0.1",
+    title: "Dokumentasi API Acara",
+    description: "Dokumentasi API Acara",
+  },
+  servers : [
+    {
+      url: "http://localhost:3000/api",
+      description: "Local Development",
+    },
+    {
+      url: "https://be-two-theta.vercel.app/api",
+      description: "Deploy Server",
+    },
+  ],
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    },
+    schemas: {
+      LoginRequest: {
+        identifier: "username/email",
+        password: "password",
+      },
+    }
+  },
+};
+
+swaggerAutogen ({openapi: "3.0.0"})(outputFile, endpointsFiles, doc);
