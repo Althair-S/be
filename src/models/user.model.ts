@@ -19,7 +19,7 @@ const UserSchema = new Schema<User>({
   username       : { type: Schema.Types.String, required: true },
   email          : { type: Schema.Types.String, required: true },
   password       : { type: Schema.Types.String, required: true },
-  role           : { type: Schema.Types.String, enum: ["admin", "user"], default: "user", required: true },
+  role           : { type: Schema.Types.String, enum: ["admin", "user"], default: "user" },
   profilePicture : { type: Schema.Types.String, default: "user.jpg" },
   isActive       : { type: Schema.Types.Boolean, default: false },
   activationCode : { type: Schema.Types.String, },
@@ -39,7 +39,7 @@ UserSchema.methods.toJSON = function() {
   return user;
 }
 
-const UserModel = mongoose.model<User>("User", UserSchema);
+const UserModel = mongoose.model("User", UserSchema);
 
 export default UserModel;
 

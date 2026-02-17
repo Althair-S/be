@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import * as yup from "yup";
-
 import UserModel from "../models/user.model";
 import { encrypt } from "../utils/encryption";
+import { Types } from "mongoose";
+import { IReqUser } from "../middlewares/auth.middleware";
+import { generateToken } from "../utils/jwt";
 
 type TRegister = {
-    fullname: string;
+    fullName: string;
     username: string;
     email: string;
     password: string;
@@ -18,21 +20,21 @@ type TLogin = {
 };
 
 const registerValidateSchema = yup.object({
-    fullname: yup.string().required(),
+    fullName: yup.string().required(),
     username: yup.string().required(),
     email: yup.string().required(),
     password: yup.string().required(),
-    confirm_password: yup.string().required().oneOf([yup.ref("password")], "Passwords not match"),
+    confirmPassword: yup.string().required().oneOf([yup.ref("password")], "Passwords not match"),
 });
 
 export default {
     async register(req: Request, res: Response) {
-        const { fullname, username, email, password, confirmPassword } =
+        const { fullName, username, email, password, confirmPassword } =
             req.body as unknown as TRegister;
 
         try {
             await registerValidateSchema.validate({
-                fullname,
+                fullName,
                 username,
                 email,
                 password,
@@ -40,7 +42,7 @@ export default {
             });
 
             const result = await UserModel.create({
-                fullname,
+                fullName,
                 username,
                 email,
                 password,
@@ -72,29 +74,52 @@ export default {
             });
             if (!userByIdentifier) {
                 return res.status(403).json({
-                    message: "User not found",
-                    data: null,
+                    message : "User not found",
+                    data    : null,
                 });
             }
             // validasi password
             const validatePassword : boolean = encrypt(password) === userByIdentifier.password;
             if (!validatePassword) {
                 return res.status(403).json({
-                    message: "user not found",
-                    data: null,
+                    message : "user not found",
+                    data    : null,
                 });
             }
 
+            const token = generateToken({
+                id: userByIdentifier._id,
+                role: userByIdentifier.role,
+            });
+
             res.status(200).json({
-                message: "User Login Success",
-                data: userByIdentifier,
+                message : "User Login Success",
+                data    : token,
             });
 
         } catch (error) {
             const err = error as unknown as Error;
             res.status(400).json({
-                message: err.message,
-                data: null,
+                message : err.message,
+                data    : null,
+            });
+        }
+    },
+
+    async me(req: IReqUser, res:Response) {
+        try {
+            const user = req.user;
+            const result = await UserModel.findById(user?.id);
+
+            res.status(200).json({
+                message : "Success Get User Profile",
+                data    : result,
+            });
+        } catch (error) {
+            const err = error as unknown as Error;
+            res.status(400).json({
+                message : err.message,
+                data    : null,
             });
         }
     },

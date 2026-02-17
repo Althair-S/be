@@ -14,11 +14,9 @@ async function init() {
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });
-
     } catch (error) {
         console.log(error);
     }
-
 }
 
 init();
