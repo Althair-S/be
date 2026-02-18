@@ -23,7 +23,12 @@ const registerValidateSchema = yup.object({
     fullName: yup.string().required(),
     username: yup.string().required(),
     email: yup.string().required(),
-    password: yup.string().required(),
+    password: yup.string().required().min(6, "Password must be at least 6 characters").test("password", "Password must contain at least one uppercase letter and one number",
+        (value) => {
+            if (!value) return false;
+            const regex = /^(?=.*[A-Z])(?=.*\d)/;
+            return regex.test(value);
+        }),
     confirmPassword: yup.string().required().oneOf([yup.ref("password")], "Passwords not match"),
 });
 
@@ -81,6 +86,7 @@ export default {
                     { email: identifier, },
                     { username: identifier, },
                 ],
+                isActive : true,
             });
             if (!userByIdentifier) {
                 return res.status(403).json({
@@ -137,4 +143,37 @@ export default {
             });
         }
     },
+
+    async activation (req: Request, res:Response) {
+        /**
+        #swagger.tags = ["Auth"]
+        #swagger.requestBody = {
+            required: true,
+            schema: { $ref: "#/components/schemas/ActivationRequest" }
+        }
+         */
+        try {
+            const { code } = req.body as { code:string };
+
+            const user = await UserModel.findOneAndUpdate({
+                activationCode : code,
+            }, {
+                isActive : true,
+            }, {
+                new : true,
+            }
+        );
+        res.status(200).json({
+            message : "User Activated Successfully",
+            data    : user,
+        });
+            
+        } catch (error) {
+            const err = error as unknown as Error;
+            res.status(400).json({
+                message : err.message,
+                data    : null,
+            });
+        }
+    }
 };

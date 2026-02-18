@@ -39,6 +39,16 @@ const doc = {
         identifier: "username/email",
         password: "password",
       },
+      RegisterRequest: {
+        fullName: "full name",
+        username: "username",
+        email: "email",
+        password: "password",
+        confirmPassword: "password",
+      },
+      ActivationRequest: {
+        code: "activation code",
+      },
     }
   },
 };
