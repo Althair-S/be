@@ -13,3 +13,7 @@ export const EMAIL_SMTP_HOST         : string = process.env.EMAIL_SMTP_HOST || "
 export const EMAIL_SMTP_SERVICE_NAME : string = process.env.EMAIL_SMTP_SERVICE_NAME || "";
 
 export const CLIENT_HOST : string = process.env.CLIENT_HOST || "http://localhost:3001";
+
+export const CLAUDINARY_CLOUD_NAME : string = process.env.CLAUDINARY_CLOUD_NAME || "";
+export const CLAUDINARY_API_KEY : string = process.env.CLAUDINARY_API_KEY || "";
+export const CLAUDINARY_API_SECRET : string = process.env.CLAUDINARY_API_SECRET || "";

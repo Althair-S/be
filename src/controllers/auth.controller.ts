@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import * as yup from "yup";
 import UserModel from "../models/user.model";
 import { encrypt } from "../utils/encryption";
-import { Types } from "mongoose";
-import { IReqUser } from "../middlewares/auth.middleware";
+import { IReqUser } from "../utils/interface";
 import { generateToken } from "../utils/jwt";
 
 type TRegister = {
