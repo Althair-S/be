@@ -1,65 +1,42 @@
 import { Response } from "express"
 import { IReqUser } from "../utils/interface"
 import uploader from "../utils/uploader"
+import response from "../utils/response"
 
 
 export default {
   async single(req : IReqUser, res : Response) {
     if(!req.file) {
-        return res.status(400).json({
-          message: "File is not exist",
-          data: null,
-        });
+        return response.error(res,null, "File is not exist");
       }
 
     try {
       const result = await uploader.uploadSingle(req.file as Express.Multer.File)
-      res.status(200).json({
-        message: "File uploaded successfully",
-        data: result,
-      })
+      response.success(res, result, "File uploaded successfully");
     } catch {
-      res.status(500).json({
-        message: "failed upload a file",
-        data: null,
-      })
+      response.error(res,null, "failed upload a file");
     }
   },
+
   async multiple (req : IReqUser, res : Response) {
     if(!req.files || req.files.length === 0) {
-        return res.status(400).json({
-          message: "File is not exist",
-          data: null,
-        });
+        return response.error(res,null, "File is not exist");
       }
 
     try {
       const result = await uploader.uploadMultiple(req.files as Express.Multer.File[])
-      res.status(200).json({
-        message: "Files uploaded successfully",
-        data: result,
-      })
+      response.success(res, result, "Files uploaded successfully");
     } catch {
-      res.status(500).json({
-        message: "failed upload a files",
-        data: null,
-      })
+      response.error(res,null, "failed upload a files");
     }
   },
   async remove (req : IReqUser, res : Response) {
     try {
       const { fileUrl } = req.body as { fileUrl : string}
       const result = await uploader.remove(fileUrl)
-      res.status(200).json({
-        message: "success remove file",
-        data: result,
-      })
+      response.success(res, result, "success remove file");
     } catch {
-      res.status(500).json({
-        message: "failed remove a file",
-        data: null,
-      })
+      response.error(res,null, "failed remove a file");
     }
   },
-
 } 
