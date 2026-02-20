@@ -17,7 +17,11 @@ export const eventDAO = yup.object({
     createdBy   : yup.string().required(),
     createdAt   : yup.string(),
     updatedAt   : yup.string(),
-    location    : yup.object().required(),
+    location    : yup.object().shape({
+      region      : yup.number(),
+      coordinates : yup.array(),
+      address     : yup.string(),
+    }).required(),
 });
 
 export type TEvent = yup.InferType<typeof eventDAO>;
@@ -44,6 +48,7 @@ const eventSchema = new Schema<Event>({
   location    : { type: {
       region      : { type: Schema.Types.Number },
       coordinates : { type: [Schema.Types.Number], default: [0, 0] },
+      address     : { type: Schema.Types.String },
     },
   }
 }, { timestamps : true });
