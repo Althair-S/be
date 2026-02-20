@@ -53,7 +53,7 @@ const eventSchema = new Schema<Event>({
       address     : { type: Schema.Types.String },
     },
   }
-}, { timestamps : true });
+}, { timestamps : true }).index({ name: "text" });
 
 eventSchema.pre("save", function (next) {
   if(!this.slug) {

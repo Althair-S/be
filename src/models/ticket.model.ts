@@ -24,7 +24,7 @@ const TicketSchema = new Schema<Ticket>({
   event       : { type: Schema.Types.ObjectId, required: true, ref: EVENT_MODEL_NAME },
   quantity    : { type: Schema.Types.Number, required: true },
   description : { type: Schema.Types.String, required: true },
-}, { timestamps: true });
+}, { timestamps: true }).index({ name: "text" });
 
 const TicketModel = mongoose.model(TICKET_MODEL_NAME, TicketSchema);
 
