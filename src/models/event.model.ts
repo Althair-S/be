@@ -1,6 +1,8 @@
 import mongoose, { ObjectId } from "mongoose";
 import * as yup from "yup";
 
+export const EVENT_MODEL_NAME = "Event";
+
 const Schema = mongoose.Schema;
 
 export const eventDAO = yup.object({
@@ -60,6 +62,6 @@ eventSchema.pre("save", function (next) {
   }
 })
 
-const EventModel = mongoose.model("Event", eventSchema);
+const EventModel = mongoose.model(EVENT_MODEL_NAME, eventSchema);
 
 export default EventModel;
