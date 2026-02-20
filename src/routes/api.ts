@@ -394,7 +394,7 @@ router.put("/orders/:orderId/pending", [authMiddleware, aclMiddleware([ROLES.ADM
   */
 );
 
-router.put("/orders/:orderId/cancel", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.cancel
+router.put("/orders/:orderId/cancel", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.canceled
   /*
   #swagger.tags = ['Orders']
   #swagger.security = [{ 'bearerAuth': {} }]
