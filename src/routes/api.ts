@@ -11,6 +11,7 @@ import regionController from "../controllers/region.controller";
 import eventController from "../controllers/event.controller";
 import ticketController from "../controllers/ticket.controller";
 import bannerController from "../controllers/banner.controller";
+import orderController from "../controllers/order.controller";
 
 const router = express.Router();
 
@@ -211,6 +212,25 @@ router.post("/events", [authMiddleware, aclMiddleware([ROLES.ADMIN])], eventCont
 router.get("/events", eventController.findAll
   /*
   #swagger.tags = ['Event']
+  #swagger.parameters['limit']      = { in : 'query', type : 'number', default : 10 }
+  #swagger.parameters['page']       = { in : 'query', type : 'number', default : 1 }
+  #swagger.parameters['search']     = { in : 'query', type : 'string', default : '' }
+  #swagger.parameters['category']   = { in : 'query', type : 'string', default : '' }
+  #swagger.parameters['isOnline']   = { in : 'query', type : 'boolean', default : false }
+  #swagger.parameters['isFeatured'] = { in : 'query', type : 'boolean', default : false }
+  #swagger.parameters['isPublish']  = { in : 'query', type : 'boolean', default : false }
+  */
+);
+
+router.get("/events/:id", eventController.findOne
+  /*
+  #swagger.tags = ['Event']
+  */
+);
+
+router.get("/events/:slug/slug", eventController.findOneBySlug
+  /*
+  #swagger.tags = ['Event']
   */
 );
 
@@ -316,6 +336,68 @@ router.delete('/media/remove', [
       $ref : "#/components/schemas/RemoveMediaRequest"
     }  
   }
+  */
+);
+
+router.post("/orders", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.create
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  #swagger.requestBody = {
+    required : true,
+    schema : {
+      $ref : "#/components/schemas/CreateOrderRequest"
+    }  
+  }
+  */
+);
+
+router.get("/orders", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.findAll
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.get("/orders/:orderId", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.findOne
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.get("/orders/:memberId", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.findAllByMember
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.delete("/orders/:orderId/remove", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.remove
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.put("/orders/:orderId/complete", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.complete
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.put("/orders/:orderId/pending", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.pending
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.put("/orders/:orderId/cancel", [authMiddleware, aclMiddleware([ROLES.ADMIN, ROLES.MEMBER])], orderController.cancel
+  /*
+  #swagger.tags = ['Orders']
+  #swagger.security = [{ 'bearerAuth': {} }]
   */
 );
 

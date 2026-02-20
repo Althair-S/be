@@ -85,6 +85,14 @@ const doc = {
         quantity : 100,
         description : "Ticket Description",
       },
+      CreateOrderRequest: {
+        ticket : "ticket ObjectID",
+        quantity : 1,
+      },
+      UpdateOrderRequest: {
+        ticket : "ticket ObjectID",
+        quantity : 1,
+      },
     }
   },
 };
