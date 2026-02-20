@@ -10,6 +10,7 @@ import categoryController from "../controllers/category.controller";
 import regionController from "../controllers/region.controller";
 import eventController from "../controllers/event.controller";
 import ticketController from "../controllers/ticket.controller";
+import bannerController from "../controllers/banner.controller";
 
 const router = express.Router();
 
@@ -17,6 +18,12 @@ router.post("/auth/register", authController.register);
 router.post("/auth/login", authController.login);
 router.get("/auth/me", authMiddleware, authController.me);
 router.post("/auth/activation", authController.activation);
+
+router.post("/banner", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.create);
+router.get("/banner", bannerController.findAll);
+router.get("/banner/:id", bannerController.findOne);
+router.put("/banner/:id", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.update);
+router.delete("/banner/:id", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.remove);
 
 router.post("/tickets",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.create);
 router.get("/tickets",ticketController.findAll);
