@@ -19,18 +19,101 @@ router.post("/auth/login", authController.login);
 router.get("/auth/me", authMiddleware, authController.me);
 router.post("/auth/activation", authController.activation);
 
-router.post("/banner", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.create);
-router.get("/banner", bannerController.findAll);
-router.get("/banner/:id", bannerController.findOne);
-router.put("/banner/:id", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.update);
-router.delete("/banner/:id", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.remove);
+router.post("/banner", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.create
+  /*
+  #swagger.tags = ['Banners']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  #swagger.requestBody = {
+    required : true,
+    schema : {
+      $ref : "#/components/schemas/CreateBannerRequest"
+    }  
+  }
+  */
+);
 
-router.post("/tickets",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.create);
-router.get("/tickets",ticketController.findAll);
-router.get("/tickets/:id",ticketController.findOne);
-router.put("/tickets/:id",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.update);
-router.delete("/tickets/:id",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.remove);
-router.get("/tickets/:eventId/events",ticketController.findAllByEvent);
+router.get("/banner", bannerController.findAll
+  /*
+  #swagger.tags = ['Banners']
+  */
+);
+
+router.get("/banner/:id", bannerController.findOne
+  /*
+  #swagger.tags = ['Banners']
+  */
+);
+
+router.put("/banner/:id", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.update
+  /*
+  #swagger.tags = ['Banners']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  #swagger.requestBody = {
+    required : true,
+    schema : {
+      $ref : "#/components/schemas/UpdateBannerRequest"
+    }  
+  }
+  */
+);
+
+router.delete("/banner/:id", [authMiddleware, aclMiddleware([ROLES.ADMIN])], bannerController.remove
+  /*
+  #swagger.tags = ['Banners']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.post("/tickets",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.create
+  /*
+  #swagger.tags = ['Tickets']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  #swagger.requestBody = {
+    required : true,
+    schema : {
+      $ref : "#/components/schemas/CreateTicketRequest"
+    }  
+  }
+  */
+);
+
+router.get("/tickets",ticketController.findAll
+  /*
+  #swagger.tags = ['Tickets']
+  */
+);
+
+router.get("/tickets/:id",ticketController.findOne
+  /*
+  #swagger.tags = ['Tickets']
+  */
+);
+
+router.put("/tickets/:id",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.update
+  /*
+  #swagger.tags = ['Tickets']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  #swagger.requestBody = {
+    required : true,
+    schema : {
+      $ref : "#/components/schemas/UpdateTicketRequest"
+    }  
+  }
+  */
+);
+
+router.delete("/tickets/:id",[authMiddleware, aclMiddleware([ROLES.ADMIN])],ticketController.remove
+  /*
+  #swagger.tags = ['Tickets']
+  #swagger.security = [{ 'bearerAuth': {} }]
+  */
+);
+
+router.get("/tickets/:eventId/events",ticketController.findAllByEvent
+  /*
+  #swagger.tags = ['Tickets']
+  */
+);
 
 router.post("/category", [authMiddleware, aclMiddleware([ROLES.ADMIN])], categoryController.create
   /*
@@ -106,7 +189,11 @@ router.get("/regions/:id/village", regionController.getVillage
   #swagger.tags = ['Region']
   */
 );
-router.get("/regions-search", regionController.findByCity);
+router.get("/regions-search", regionController.findByCity
+  /*
+  #swagger.tags = ['Region']
+  */
+);
 
 router.post("/events", [authMiddleware, aclMiddleware([ROLES.ADMIN])], eventController.create
   /*
