@@ -1200,7 +1200,7 @@
     "/orders": {
       "post": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "",
         "parameters": [
@@ -1240,7 +1240,7 @@
       },
       "get": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "",
         "parameters": [
@@ -1288,77 +1288,7 @@
     "/orders/{orderId}": {
       "get": {
         "tags": [
-          "Orders"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": {}
-          }
-        ]
-      }
-    },
-    "/orders/{memberId}": {
-      "get": {
-        "tags": [
-          "Orders"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "memberId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": {}
-          }
-        ]
-      }
-    },
-    "/orders/{orderId}/remove": {
-      "delete": {
-        "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "",
         "parameters": [
@@ -1393,7 +1323,7 @@
     "/orders/{orderId}/complete": {
       "put": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "",
         "parameters": [
@@ -1428,7 +1358,7 @@
     "/orders/{orderId}/pending": {
       "put": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "",
         "parameters": [
@@ -1463,7 +1393,90 @@
     "/orders/{orderId}/cancel": {
       "put": {
         "tags": [
-          "Orders"
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": {}
+          }
+        ]
+      }
+    },
+    "/orders-history": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": {}
+          }
+        ]
+      }
+    },
+    "/orders/{orderId}/remove": {
+      "delete": {
+        "tags": [
+          "Order"
         ],
         "description": "",
         "parameters": [
@@ -1504,22 +1517,6 @@
       }
     },
     "schemas": {
-      "LoginRequest": {
-        "type": "object",
-        "properties": {
-          "identifier": {
-            "type": "string",
-            "example": "username/email"
-          },
-          "password": {
-            "type": "string",
-            "example": "password"
-          }
-        },
-        "xml": {
-          "name": "LoginRequest"
-        }
-      },
       "RegisterRequest": {
         "type": "object",
         "properties": {
@@ -1546,6 +1543,22 @@
         },
         "xml": {
           "name": "RegisterRequest"
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "example": "username/email"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        },
+        "xml": {
+          "name": "LoginRequest"
         }
       },
       "ActivationRequest": {
@@ -1611,8 +1624,8 @@
             "type": "object",
             "properties": {
               "region": {
-                "type": "string",
-                "example": "region id"
+                "type": "number",
+                "example": 3274
               },
               "coordinates": {
                 "type": "array",
@@ -1710,6 +1723,10 @@
       "CreateOrderRequest": {
         "type": "object",
         "properties": {
+          "event": {
+            "type": "string",
+            "example": "event ObjectID"
+          },
           "ticket": {
             "type": "string",
             "example": "ticket ObjectID"

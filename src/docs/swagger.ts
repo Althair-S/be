@@ -35,16 +35,16 @@ const doc = {
       },
     },
     schemas: {
-      LoginRequest: {
-        identifier: "username/email",
-        password: "password",
-      },
       RegisterRequest: {
         fullName: "full name",
         username: "username",
         email: "email",
         password: "password",
         confirmPassword: "password",
+      },
+      LoginRequest: {
+        identifier: "username/email",
+        password: "password",
       },
       ActivationRequest: {
         code: "activation code",
@@ -62,7 +62,7 @@ const doc = {
         startDate : "yyyy-mm-dd hh:mm:ss",
         endDate : "yyyy-mm-dd hh:mm:ss",
         location : {
-          region : "region id",
+          region : 3274,
           coordinates : [0,0],
           address : "",
         },
@@ -86,6 +86,7 @@ const doc = {
         description : "Ticket Description",
       },
       CreateOrderRequest: {
+        event : "event ObjectID",
         ticket : "ticket ObjectID",
         quantity : 1,
       },

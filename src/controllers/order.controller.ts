@@ -127,7 +127,6 @@ export default {
     }
   },
 
-
   async complete(req : IReqUser, res : Response) {
     try {
       const { orderId } = req.params;
@@ -173,11 +172,9 @@ export default {
   async pending(req : IReqUser, res : Response) {
     try {
       const { orderId } = req.params;
-      const userId = req.user?.id;
 
       const order = await OrderModel.findOne({
         orderId,
-        createdBy : userId,
       });
 
       if(!order) return response.notFound(res, "Order not found");
@@ -191,7 +188,7 @@ export default {
       }
 
       const result = await OrderModel.findOneAndUpdate(
-        { orderId, createdBy : userId },
+        { orderId },
         { status : OrderStatus.PENDING },
         { new : true }
       );
@@ -203,14 +200,12 @@ export default {
     }
   },
 
-  async canceled(req : IReqUser, res : Response) {
+  async cancelled(req : IReqUser, res : Response) {
     try {
       const { orderId } = req.params;
-      const userId = req.user?.id;
 
       const order = await OrderModel.findOne({
         orderId,
-        createdBy : userId,
       });
 
       if(!order) return response.notFound(res, "Order not found");
@@ -220,18 +215,18 @@ export default {
       }
 
       if(order.status === OrderStatus.CANCELLED) {
-        return response.error(res, null, "this order currently in canceled");
+        return response.error(res, null, "this order currently in cancelled");
       }
 
       const result = await OrderModel.findOneAndUpdate(
-        { orderId, createdBy : userId },
+        { orderId },
         { status : OrderStatus.CANCELLED },
         { new : true }
       );
 
-      response.success(res, result, "success to canceled an order");
+      response.success(res, result, "success to cancelled an order");
     } catch (error) {
-      response.error(res, error, "Failed to canceled an order");
+      response.error(res, error, "Failed to cancelled an order");
     }
   },
 
@@ -252,4 +247,6 @@ export default {
       response.error(res, error, "Failed to remove an order");
     }
   },
+
+
 };
