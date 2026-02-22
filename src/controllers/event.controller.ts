@@ -3,6 +3,7 @@ import { IPaginationQuery, IReqUser } from "../utils/interface";
 import response from "../utils/response";
 import EventModel, { eventDTO, TypeEvent } from "../models/event.model";
 import { FilterQuery, isValidObjectId } from "mongoose";
+import uploader from "../utils/uploader";
 
 export default {
   async create(req: IReqUser, res: Response) {
@@ -86,6 +87,9 @@ export default {
       }
 
       const result = await EventModel.findByIdAndUpdate(id, req.body, {new: true});
+
+      if (!result) return response.notFound(res,"event not found");
+
       response.success(res, result, "success update one event");
     } catch (error) {
       response.error(res, error, "failed to update one event");
@@ -101,6 +105,11 @@ export default {
       }
 
       const result = await EventModel.findByIdAndDelete(id, {new : true});
+
+      if (!result) return response.notFound(res,"event not found");
+
+      await uploader.remove(result.banner);
+
       response.success(res, result, "success remove one event");
     } catch (error) {
       response.error(res, error, "failed to remove one event");
@@ -111,6 +120,9 @@ export default {
     try {
       const {slug} = req.params;
       const result = await EventModel.findOne({slug});
+
+      if (!result) return response.notFound(res,"event not found");
+
       response.success(res, result, "success find one event by slug");
     } catch (error) {
       response.error(res, error, "failed to find one event by slug");
