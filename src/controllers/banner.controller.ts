@@ -1,14 +1,14 @@
 import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interface";
 import response from "../utils/response";
-import BannerModel, { bannerDAO, TypeBanner } from "../models/banner.model";
+import BannerModel, { bannerDTO, TypeBanner } from "../models/banner.model";
 import { FilterQuery, isValidObjectId } from "mongoose";
 
 
 export default {
   async create (req: IReqUser, res: Response) {
     try {
-      await bannerDAO.validate(req.body);
+      await bannerDTO.validate(req.body);
       const result = await BannerModel.create(req.body);
       response.success(res, result, "success create a banner");
     } catch (error) {
@@ -75,7 +75,7 @@ export default {
   async update (req: IReqUser, res: Response) {
     try {
       const { id } = req.params;
-      await bannerDAO.validate(req.body);
+      await bannerDTO.validate(req.body);
 
       if (!isValidObjectId(id)) {
         return response.notFound(res, "failed update a banner");

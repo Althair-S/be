@@ -4,19 +4,45 @@ import { encrypt } from "../utils/encryption";
 import { renderMailHtml, sendMail } from "../utils/mail/mail";
 import { CLIENT_HOST, EMAIL_SMTP_USER } from "../utils/env";
 import { ROLES } from "../utils/constant";
+import * as yup from "yup";
+
+const validatePassword = yup.string().required().min(6, "Password must be at least 6 characters").test("password", "Password must contain at least one uppercase letter and one number",
+        (value) => {
+            if (!value) return false;
+            const regex = /^(?=.*[A-Z])(?=.*\d)/;
+            return regex.test(value);
+        });
+const validateConfirmPassword = yup.string().required().oneOf([yup.ref("password")], "Passwords not match");
 
 export const USER_MODEL_NAME = "User";
 
-export interface User {
-  fullName       : string;
-  username       : string;
-  email          : string;
-  password       : string;
-  role           : string;
-  profilePicture : string;
+export const userLoginDTO = yup.object({
+    identifier : yup.string().required("Identifier is required"),
+    password : validatePassword,
+});
+
+export const userUpdatePasswordDTO = yup.object({
+    oldPassword : validatePassword,
+    Password : validatePassword,
+    confirmPassword : validateConfirmPassword,
+});
+
+export const userDTO = yup.object({
+    fullName        : yup.string().required("Full name is required"),
+    username        : yup.string().required("Username is required"),
+    email           : yup.string().required("Email is required").email("Invalid email format"),
+    password        : validatePassword,
+    confirmPassword : validateConfirmPassword,
+});
+
+export type TypeUser = yup.InferType<typeof userDTO>;
+
+export interface User extends Omit<TypeUser, "confirmPassword"> {
   isActive       : boolean;
   activationCode : string;
-  createdAt?     : string;
+  createdAt      : Date;
+  role           : string;
+  profilePicture : string;
 }
 
 const Schema = mongoose.Schema;

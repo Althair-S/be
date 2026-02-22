@@ -1,13 +1,13 @@
 import { Response } from "express";
 import { IPaginationQuery, IReqUser } from "../utils/interface";
 import response from "../utils/response";
-import TicketModel, { ticketDAO, TypeTicket } from "../models/ticket.model";
+import TicketModel, { ticketDTO, TypeTicket } from "../models/ticket.model";
 import { FilterQuery, isValidObjectId } from "mongoose";
 
 export default {
   async create(req: IReqUser, res: Response) {
     try {
-      await ticketDAO.validate(req.body);
+      await ticketDTO.validate(req.body);
       const result = await TicketModel.create(req.body);
       response.success(res, result, "Ticket created successfully");
     } catch (error) {
@@ -73,7 +73,7 @@ export default {
   async update(req: IReqUser, res: Response) {
     try {
       const { id } = req.params;
-      await ticketDAO.validate(req.body);
+      await ticketDTO.validate(req.body);
 
       if (!isValidObjectId(id)) {
         return response.notFound(res, "failed update a ticket");

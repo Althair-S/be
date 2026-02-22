@@ -5,7 +5,7 @@ export const EVENT_MODEL_NAME = "Event";
 
 const Schema = mongoose.Schema;
 
-export const eventDAO = yup.object({
+export const eventDTO = yup.object({
     name        : yup.string().required(),
     startDate   : yup.string().required(),
     endDate     : yup.string().required(),
@@ -26,7 +26,7 @@ export const eventDAO = yup.object({
     }).required(),
 });
 
-export type TypeEvent = yup.InferType<typeof eventDAO>;
+export type TypeEvent = yup.InferType<typeof eventDTO>;
 
 export interface Event extends Omit<TypeEvent, "category" | "createdBy"> {
   category : ObjectId;
